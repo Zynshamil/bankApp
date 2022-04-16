@@ -32,9 +32,35 @@ export class LoginComponent implements OnInit {
   pswdChange(event: any) {
     this.pswd = event.target.value
   }
-  login() {
-    var acno = this.acno
-    var pswd = this.pswd
+
+// using event binding using $event
+// login() {
+  //   var acno = this.acno
+  //   var pswd = this.pswd
+
+  //   let database = this.database
+
+  //   if (acno in database) {
+  //     if (pswd == database[acno]["password"]) {
+  //       alert("login success")
+  //     }
+  //     else {
+  //       alert("invalid password")
+  //     }
+  //   }
+  //   else{
+  //     alert("user does not exist")
+  //   }
+
+
+
+  // }
+
+  // using Template referencing variable
+
+  login(a:any,p:any) {
+    var acno = a.value
+    var pswd = p.value
 
     let database = this.database
 
