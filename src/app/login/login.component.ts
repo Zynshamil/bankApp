@@ -33,10 +33,35 @@ export class LoginComponent implements OnInit {
     this.pswd = event.target.value
   }
 
-// using event binding using $event
-// login() {
-  //   var acno = this.acno
-  //   var pswd = this.pswd
+  // using event binding using $event, Two way binding ngmodel
+  login() {
+    var acno = this.acno
+    var pswd = this.pswd
+
+    let database = this.database
+
+    if (acno in database) {
+      if (pswd == database[acno]["password"]) {
+        alert("login success")
+      }
+      else {
+        alert("invalid password")
+      }
+    }
+    else {
+      alert("user does not exist")
+    }
+
+  }
+}
+
+  // }
+
+  // using Template referencing variable
+
+  // login(a:any,p:any) {
+  //   var acno = a.value
+  //   var pswd = p.value
 
   //   let database = this.database
 
@@ -56,28 +81,4 @@ export class LoginComponent implements OnInit {
 
   // }
 
-  // using Template referencing variable
 
-  login(a:any,p:any) {
-    var acno = a.value
-    var pswd = p.value
-
-    let database = this.database
-
-    if (acno in database) {
-      if (pswd == database[acno]["password"]) {
-        alert("login success")
-      }
-      else {
-        alert("invalid password")
-      }
-    }
-    else{
-      alert("user does not exist")
-    }
-
-
-
-  }
-
-}
