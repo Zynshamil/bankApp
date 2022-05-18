@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { DataService } from '../services/data.service';
 
 @Component({
   selector: 'app-login',
@@ -9,20 +11,18 @@ import { Router } from '@angular/router';
 export class LoginComponent implements OnInit {
 
   aim = "Your Perfect Banking Parter"
-  acno = ""
-  pswd = ""
 
-  // database
+  
+  // registerForm Model
+  loginForm = this.fb.group({
 
-  database: any = {
-    1000: { acno: 1000, uname: "sam", password: 1000, balance: 50000 },
-    1001: { acno: 1001, uname: "saml", password: 1000, balance: 40000 },
-    1002: { acno: 1002, uname: "samy", password: 1000, balance: 80000 },
+  
+    acno:['',[Validators.required,Validators.pattern('[0-9]*')]],
+    pswd:['',[Validators.required,Validators.pattern('[a-zA-z0-9]*')]]
+  })
+  
 
-
-  }
-
-  constructor(private router:Router) { }
+  constructor(private router:Router,private ds:DataService, private fb:FormBuilder) { }
 
   ngOnInit(): void {
   }
@@ -36,26 +36,32 @@ export class LoginComponent implements OnInit {
 
   // using event binding using $event, Two way binding ngmodel
   login() {
-    var acno = this.acno
-    var pswd = this.pswd
+    var acno = this.loginForm.value.acno
+    var pswd = this.loginForm.value.pswd
+    if(this.loginForm.valid){
+// call login in dataService-asynchronou
 
-    let database = this.database
-
-    if (acno in database) {
-      if (pswd == database[acno]["password"]) {
-        alert("login success")
-        this.router.navigateByUrl("dashboard")
-      }
-      else {
-        alert("invalid password")
-      }
+   this.ds.login(acno,pswd)
+   .subscribe((result:any)=>{
+    if(result){
+      localStorage.setItem('currentAcno',JSON.stringify(result.currentAcno))
+      localStorage.setItem('currentUser',JSON.stringify(result.currentUser))
+      localStorage.setItem("token",JSON.stringify(result.token))
+      alert("login successfull")
+      this.router.navigateByUrl("dashboard")
     }
-    else {
-      alert("user does not exist")
-    }
-
-  }
+   },
+   (result)=>{
+     alert(result.error.message)
+   }
+   )}
+ else{
+   alert("invalid Form")
+ }
 }
+}
+  
+
 
   // }
 

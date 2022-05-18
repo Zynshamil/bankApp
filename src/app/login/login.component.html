@@ -1,10 +1,10 @@
 <nav class="navbar navbar-light bg-dark ">
-    <a class="navbar-brand  " href="#" style="color:rgb(85, 98, 237);"><b>&#169; HAFC Bank Pvt.Ltd </b></a>
+    <a class="navbar-brand  " href="#" style="color: azure;"><b>&#169; HAFC Bank Pvt.Ltd </b></a>
     <span class="quote text-light">Giving you freedom...</span> <br>
     <h4 style="color: aliceblue;">{{aim}}</h4>
 </nav>
 
-
+<div style="margin-top: 150px;">
 <div class="container col-md-12 mt-0">
     <div class="d-flex justify-content-center h-100">
         <div class="card">
@@ -13,7 +13,7 @@
 
             </div>
             <div class="card-body">
-                <form (ngSubmit)="login()" >
+                <form [formGroup]="loginForm" (ngSubmit)="login()" >
                     <div class="input-group form-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fas fa-user"></i></span>
@@ -22,10 +22,15 @@
                         <!-- using template referencing variable -#acno -->
 
 
-                        <input type="text" name="acno" [(ngModel)]="acno" class="form-control" placeholder="account number" id="login_accno"
+                        <input type="text" name="acno" formControlName="acno" class="form-control" placeholder="account number" id="login_accno"
                             required>
 
                     </div>
+
+                    <div style="color: red;" *ngIf="(this.loginForm.get('acno')?.touched||this.loginForm.get('acno')?.dirty)
+                    &&this.loginForm.get('acno')?.errors">Invalid Account Number</div>
+
+
                     <div class="input-group form-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fas fa-key"></i></span>
@@ -34,9 +39,13 @@
                         <!-- event binding using $event  (change)="pswdChange($event)" -->
                         <!-- using template referencing variable -#pswd -->
 
-                        <input name="pswd"  type="password" [(ngModel)]="pswd" class="form-control" placeholder="password" id="login_password"
+                        <input name="pswd"  type="password" formControlName="pswd" class="form-control" placeholder="password" id="login_password"
                             required>
                     </div>
+
+                    <div style="color: red;" *ngIf="(this.loginForm.get('pswd')?.touched||this.loginForm.get('pswd')?.dirty)
+                    &&this.loginForm.get('pswd')?.errors">Invalid password</div>
+
 
                     <div class="form-group">
 
@@ -45,7 +54,8 @@
                     </div>
                 </form>
             </div>
-            <p style="color:white;align-items:baseline;">Not a user? <a href="./register.html">Register</a></p>
+            <p style="color:white;align-items:baseline;">Not a user? <a routerLink="register">Register</a></p>
         </div>
     </div>
+</div>
 </div>
